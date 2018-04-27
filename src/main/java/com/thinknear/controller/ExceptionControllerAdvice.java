@@ -14,7 +14,7 @@ import com.thinknear.service.exception.CustomNotFoundException;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 	
-	private final Logger LOG = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Error> exceptionHandler(Exception ex) {
@@ -22,7 +22,7 @@ public class ExceptionControllerAdvice {
 		Error error = new Error();
 		error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		error.setMessage(ex.getMessage());
-		return new ResponseEntity<Error>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(CustomNotFoundException.class)
@@ -31,7 +31,7 @@ public class ExceptionControllerAdvice {
 		Error error = new Error();
 		error.setErrorCode(HttpStatus.NOT_FOUND.value());
 		error.setMessage(ex.getMessage());
-		return new ResponseEntity<Error>(error, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(CustomBadRequestException.class)
@@ -40,7 +40,7 @@ public class ExceptionControllerAdvice {
 		Error error = new Error();
 		error.setErrorCode(HttpStatus.BAD_REQUEST.value());
 		error.setMessage(ex.getMessage());
-		return new ResponseEntity<Error>(error, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 
 }

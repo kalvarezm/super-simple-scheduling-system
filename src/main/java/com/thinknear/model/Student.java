@@ -78,7 +78,7 @@ public class Student implements BaseModel{
 	@Override
 	@JsonBackReference
 	public Integer getId() {
-		return studentId;
+		return getStudentId();
 	}
 
 }

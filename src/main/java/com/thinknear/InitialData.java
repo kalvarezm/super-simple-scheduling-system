@@ -14,7 +14,7 @@ public class InitialData {
 
 	@Bean
 	public CommandLineRunner createClasses(ClassRepository classRepository, StudentRepository studentRepository) {
-		return (args) -> {
+		return args -> {
 			ClassScheduling class1 = new ClassScheduling("Machine learning", "Is a field of computer science");
 			ClassScheduling class2 = new ClassScheduling("Project Management",
 					"Is the practice of initiating, planning, excuting, controlling the work to achieve specific goals");

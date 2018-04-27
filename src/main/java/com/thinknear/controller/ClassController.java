@@ -19,6 +19,8 @@ import com.thinknear.service.ClassServiceImpl;
 @RestController
 @RequestMapping("classes")
 public class ClassController extends CrudController<ClassServiceImpl, ClassScheduling> {
+	
+	private static final String BASE_URI = "/classes";
 
 	@GetMapping
 	public ResponseEntity<List<ClassScheduling>> findAllByOptionalParams(
@@ -38,12 +40,12 @@ public class ClassController extends CrudController<ClassServiceImpl, ClassSched
 	}
 
 	public ClassService getService() {
-		return (ClassService) super.crudService;
+		return crudService;
 	}
 
 	@Override
 	public URI getUri() throws URISyntaxException {
-		return new URI("/classes");
+		return new URI(BASE_URI);
 	}
 
 }

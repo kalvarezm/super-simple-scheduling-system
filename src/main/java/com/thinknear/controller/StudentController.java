@@ -19,6 +19,8 @@ import com.thinknear.service.StudentServiceImpl;
 @RestController
 @RequestMapping("students")
 public class StudentController extends CrudController<StudentServiceImpl, Student> {
+	
+	private static final String BASE_URI = "/students";
 
 	@GetMapping
 	public ResponseEntity<List<Student>> findAllByOptionalParams(
@@ -37,12 +39,12 @@ public class StudentController extends CrudController<StudentServiceImpl, Studen
 	}
 
 	public StudentService getStudentService() {
-		return (StudentService) crudService;
+		return crudService;
 	}
 
 	@Override
 	public URI getUri() throws URISyntaxException {
-		return new URI("/students");
+		return new URI(BASE_URI);
 	}
 
 }

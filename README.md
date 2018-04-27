@@ -16,6 +16,7 @@ The system is composed for some parts. Next a little description:
 - Documentation: It was used Swagger for the API documentation. Enter to: http://localhost:8090/s4/api/v1/swagger-ui.html#/
 - Database: It was used H2
 - Logging: It was used slf4j for print error messages. 
+- Code review: It was used Sonar Lint to improve the code conventions. 
 
 For deploy you can run main method in Application.java. 
 - You can try entering to http://localhost:8090/s4/api/v1/students and then read the API documentation

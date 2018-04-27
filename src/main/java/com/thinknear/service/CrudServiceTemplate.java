@@ -25,7 +25,7 @@ public abstract class CrudServiceTemplate<T extends BaseRepository<S>, S> {
 		if (optional.isPresent()) {
 			return optional.get();
 		} else {
-			throw new CustomNotFoundException();
+			throw new CustomNotFoundException(CustomNotFoundException.DEFAULT_MESSAGE);
 		}
 	}
 
