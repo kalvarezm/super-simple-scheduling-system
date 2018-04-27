@@ -1,7 +1,10 @@
 package com.thinknear.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,22 +21,29 @@ import com.thinknear.service.ClassServiceImpl;
 public class ClassController extends CrudController<ClassServiceImpl, ClassScheduling> {
 
 	@GetMapping
-	public List<ClassScheduling> findAllByOptionalParams(@RequestParam(value = "title", required = false) String title,
+	public ResponseEntity<List<ClassScheduling>> findAllByOptionalParams(
+			@RequestParam(value = "title", required = false) String title,
 			@RequestParam(value = "description", required = false) String description) {
 		ClassScheduling classScheduling = new ClassScheduling(title, description);
-		return getService().findClassesByParams(classScheduling);
+		List<ClassScheduling> classes = getService().findClassesByParams(classScheduling);
+		return ResponseEntity.ok(classes);
 	}
 
 	@GetMapping("{id}/students")
-	public List<Student> findAllStudentsByOptionalParamsAndById(@PathVariable(value = "id") Integer id,
+	public ResponseEntity<List<Student>> findAllStudentsByOptionalParamsAndById(@PathVariable(value = "id") Integer id,
 			@RequestParam(value = "firstName", required = false) String firstName,
 			@RequestParam(value = "lastName", required = false) String lastName) {
 		Student student = new Student(firstName, lastName);
-		return getService().findStudentsByParamsAndClassCode(id, student);
+		return ResponseEntity.ok(getService().findStudentsByParamsAndClassCode(id, student));
 	}
 
 	public ClassService getService() {
 		return (ClassService) super.crudService;
+	}
+
+	@Override
+	public URI getUri() throws URISyntaxException {
+		return new URI("/classes");
 	}
 
 }

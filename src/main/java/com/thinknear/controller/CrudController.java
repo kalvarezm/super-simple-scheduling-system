@@ -1,6 +1,7 @@
 package com.thinknear.controller;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +19,26 @@ import com.thinknear.service.exception.CustomNotFoundException;
 
 public abstract class CrudController<T extends CrudServiceTemplate<?, S>, S extends BaseModel> {
 
+	protected T crudService;
+
 	@Autowired
-	public T crudService;
+	public void setCrudService(T crudService) {
+		this.crudService = crudService;
+	}
+
+	public abstract URI getUri() throws URISyntaxException;
 
 	@GetMapping("/{id}")
-	public S findById(@PathVariable(value = "id") Integer id) throws CustomNotFoundException {
-		return crudService.findById(id);
+	public ResponseEntity<S> findById(@PathVariable(value = "id") Integer id) throws CustomNotFoundException {
+		return ResponseEntity.ok(crudService.findById(id));
 	}
 
 	@PostMapping
-	public ResponseEntity<S> save(@RequestBody S entity) {
+	public ResponseEntity<S> save(@RequestBody S entity) throws URISyntaxException {
 		S saved = crudService.save(entity);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saved.getId())
+		URI location = ServletUriComponentsBuilder.fromUri(getUri()).path("/{id}").buildAndExpand(saved.getId())
 				.toUri();
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.created(location).body(saved);
 	}
 
 	@DeleteMapping("/{id}")
@@ -41,8 +48,9 @@ public abstract class CrudController<T extends CrudServiceTemplate<?, S>, S exte
 	}
 
 	@PutMapping("/{id}")
-	public void update(@PathVariable(value = "id") Integer id, @RequestBody S entity) {
+	public ResponseEntity<S> update(@PathVariable(value = "id") Integer id, @RequestBody S entity) {
 		crudService.update(id, entity);
+		return ResponseEntity.ok().build();
 	}
 
 }
